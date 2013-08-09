@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ScreenActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ngang"
+        android:orientation="horizontal"
+        android:weightSum="10" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="7"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/editxoa"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="6"
+                android:hint="Tìm Kiếm"
+                 android:ems="10"
+                 android:maxLines="1"
+                android:textColor="#000000" >
+
+                <requestFocus />
+            </EditText>
+            
+            <Button
+                android:id="@+id/btnxoa"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/xoa"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="3"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btnlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1.5"
+                android:background="@drawable/list" />
+
+            <Button
+                android:id="@+id/btngrid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1.5"
+                android:background="@drawable/grid" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/lstPdf"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/hinh2"
+            android:paddingLeft="@dimen/activity_horizontal_margin2"
+            android:paddingTop="@dimen/activity_vertical_margin2"
+            android:visibility="gone" >
+        </ListView>
+
+        <GridView
+            android:id="@+id/gridPdf"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/hinh3"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="4"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="32dp" >
+        </GridView>
+    </LinearLayout>
+
+</LinearLayout>
