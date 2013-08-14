@@ -29,5 +29,6 @@
     <string name="title_activity_screen">ScreenActivity</string>
     <string name="title_activity_category">CategoryActivity</string>
     <string name="title_activity_screen_list">ScreenList</string>
+    <string name="title_activity_book_marks">BookMarksActivity</string>
 
 </resources>

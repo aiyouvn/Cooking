@@ -135,7 +135,13 @@ int id_pdf_send;
 					int index=arraylist_details.get(position).getNumber_page();
 					Log.d("chychaychay",""+index);
 					intent.putExtra(Config.INDEX_PAGE, index);
+					intent.putExtra("name_pdf",name_pdf);
+				     intent.putExtra("id_PdfFile", arraylist_details.get(position).getId_pdf());
+				     int a=arraylist_details.get(position).getId_pdf();
+				     Log.d("id_catelogry",""+ a);
+					
 					startActivity(intent);
+
 					
 					
 				}

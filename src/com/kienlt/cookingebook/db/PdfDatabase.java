@@ -14,6 +14,7 @@ public class PdfDatabase extends SQLiteOpenHelper {
 	private static final String DATABASE_NAME = "CookingBooks";
 	private static final String TABLE_NAME = "Pdf_File";
 	private static final String TABLE_NAME2 = "Details_Pdf";
+	private static final String TABLE_NAME3 = "Bookmarks";
 
 	// Attribute table 1
 	private static final String KEY_ID = "id";
@@ -25,6 +26,13 @@ public class PdfDatabase extends SQLiteOpenHelper {
 	private static final String KEY_TITLE = "title";
 	private static final String KEY_CONSTANST = "id_pdf";
 
+	// Attribute table 3
+	private static final String KEY_ID3 = "id";
+	private static final String KEY_TITLE3 = "name";
+	private static final String KEY_NUMBER3 = "number_bookmark";
+	private static final String KEY_CONSTANST3 = "id_pdf";
+	
+
 	public PdfDatabase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		// TODO Auto-generated constructor stub
@@ -35,14 +43,19 @@ public class PdfDatabase extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 
 		String SQL = "CREATE TABLE " + TABLE_NAME + "(" + KEY_ID
-				+ " INTEGER PRIMARY KEY  ," + KEY_NAME + " TEXT ," + KEY_IMAGES
-				+ " TEXT )";
+				+ " INTEGER PRIMARY KEY  ," + KEY_NAME + " TEXT ,"
+				+ KEY_IMAGES + " TEXT )";
 		db.execSQL(SQL);
 
 		String SQL2 = "CREATE TABLE " + TABLE_NAME2 + "(" + KEY_ID2
 				+ " INTEGER PRIMARY KEY  ," + KEY_TITLE + " TEXT ,"
 				+ KEY_NUMBER + " INTEGER ," + KEY_CONSTANST + " INTEGER )";
 		db.execSQL(SQL2);
+
+		String SQL3 = "CREATE TABLE " + TABLE_NAME3 + "(" + KEY_ID3
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT ," + KEY_TITLE3 + " TEXT ,"
+				+ KEY_NUMBER3 + " INTEGER ," + KEY_CONSTANST3 + " INTEGER )";
+		db.execSQL(SQL3);
 
 	}
 
@@ -51,6 +64,7 @@ public class PdfDatabase extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		db.execSQL("DROP TABLE IF NOT EXISTS " + TABLE_NAME);
 		db.execSQL("DROP TABLE IF NOT EXISTS " + TABLE_NAME2);
+		db.execSQL("DROP TABLE IF NOT EXISTS " + TABLE_NAME3);
 		onCreate(db);
 
 	}
@@ -93,40 +107,39 @@ public class PdfDatabase extends SQLiteOpenHelper {
 	}
 
 	// SELECT BOOK TO ID
-/*	public FilePdf SelectBookId(int id) {
-		SQLiteDatabase db = this.getReadableDatabase();
-		String[] columns = { KEY_ID, KEY_NAME, KEY_IMAGES };
-		String selection = KEY_ID + "='" + id + "'";
-		String[] selectionArgs = { String.valueOf(id) };
-		String groupBy = null;
-		String having = null;
-		String orderBy = null;
-		Cursor cusor = db.query(TABLE_NAME, columns, selection, selectionArgs,groupBy, having, orderBy);
-		if (cusor != null)
-	
-			cusor.moveToFirst();
-		FilePdf book = new FilePdf(cusor.getInt(0), cusor.getString(1),cusor.getString(2));
-		
-		return book;
-		
-		
-		
-		
-	}*/
-	
+	/*
+	 * public FilePdf SelectBookId(int id) { SQLiteDatabase db =
+	 * this.getReadableDatabase(); String[] columns = { KEY_ID, KEY_NAME,
+	 * KEY_IMAGES }; String selection = KEY_ID + "='" + id + "'"; String[]
+	 * selectionArgs = { String.valueOf(id) }; String groupBy = null; String
+	 * having = null; String orderBy = null; Cursor cusor = db.query(TABLE_NAME,
+	 * columns, selection, selectionArgs,groupBy, having, orderBy); if (cusor !=
+	 * null)
+	 * 
+	 * cusor.moveToFirst(); FilePdf book = new FilePdf(cusor.getInt(0),
+	 * cusor.getString(1),cusor.getString(2));
+	 * 
+	 * return book;
+	 * 
+	 * 
+	 * 
+	 * 
+	 * }
+	 */
+
 	public FilePdf getBookToId(int id) {
-	    SQLiteDatabase db = this.getReadableDatabase();
-	 
-	    Cursor cursor = db.query(TABLE_NAME, new String[] { KEY_ID,
-	            KEY_NAME, KEY_IMAGES }, KEY_ID + "=?",
-	            new String[] { String.valueOf(id) }, null, null, null, null);
-	    if (cursor != null)
-	        cursor.moveToFirst();
-	 
-	    FilePdf book = new FilePdf(Integer.parseInt(cursor.getString(0)),
-	            cursor.getString(1), cursor.getString(2));
-	  
-	    return book;
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.query(TABLE_NAME, new String[] { KEY_ID, KEY_NAME,
+				KEY_IMAGES }, KEY_ID + "=?",
+				new String[] { String.valueOf(id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		FilePdf book = new FilePdf(Integer.parseInt(cursor.getString(0)),
+				cursor.getString(1), cursor.getString(2));
+
+		return book;
 	}
 
 	// INSERT DATA TO TABLE DETAILS_PDF
@@ -153,9 +166,9 @@ public class PdfDatabase extends SQLiteOpenHelper {
 				DetailsPdf details_pdf = new DetailsPdf();
 				details_pdf.setId(Integer.parseInt(cursor.getString(0)));
 				details_pdf.setTitle(cursor.getString(1));
-				details_pdf
-						.setNumber_page(Integer.parseInt(cursor.getString(2)));
+				details_pdf.setNumber_page(Integer.parseInt(cursor.getString(2)));
 				details_pdf.setId_pdf(Integer.parseInt(cursor.getString(3)));
+				
 				arraylistpdf.add(details_pdf);
 			} while (cursor.moveToNext());
 		}
@@ -163,5 +176,59 @@ public class PdfDatabase extends SQLiteOpenHelper {
 		db.close();
 		return arraylistpdf;
 	}
+	// Insert BookMark
+	public void insertBookmark_Pdf(Bookmarks bookmark) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(KEY_TITLE3, bookmark.getName());
+		values.put(KEY_NUMBER3, bookmark.getNumber_bookmark());
+		values.put(KEY_CONSTANST3, bookmark.getId_ck());
+		db.insert(TABLE_NAME3, null, values);
+		db.close();
+	}
+	// GETALL DATA IN TABLE BookMark
+	public ArrayList<Bookmarks> getAllBookmark() {
+		ArrayList<Bookmarks> arraylistpdf = new ArrayList<Bookmarks>();
 
+		SQLiteDatabase db = this.getWritableDatabase();
+		String sql = "select * from " + TABLE_NAME3;
+
+		Cursor cursor = db.rawQuery(sql, null);
+
+		if (cursor.moveToFirst()) {
+			do {
+				Bookmarks bookmarks = new Bookmarks();
+				bookmarks.setId(Integer.parseInt(cursor.getString(0)));
+				bookmarks.setName(cursor.getString(1));
+				bookmarks.setNumber_bookmark(cursor.getInt(2));
+				bookmarks.setId_ck(cursor.getInt(3));
+				arraylistpdf.add(bookmarks);
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		db.close();
+		return arraylistpdf;
+
+	}
+	// GETALL DATA IN TABLE Bookmark to ID
+	public ArrayList<Bookmarks> getBookmarkbyId(int id_pdf) {
+		ArrayList<Bookmarks> arraylistpdf = new ArrayList<Bookmarks>();
+		SQLiteDatabase db = this.getWritableDatabase();
+		String sql = "select * from " + TABLE_NAME3 + " where " + KEY_CONSTANST3
+				+ "='" + id_pdf + "'";
+		Cursor cursor = db.rawQuery(sql, null);
+		if (cursor.moveToFirst()) {
+			do {
+				Bookmarks bookmarks = new Bookmarks();
+				bookmarks.setId(Integer.parseInt(cursor.getString(0)));
+				bookmarks.setName(cursor.getString(1));
+				bookmarks.setNumber_bookmark(cursor.getInt(2));
+				bookmarks.setId_ck(cursor.getInt(3));
+				arraylistpdf.add(bookmarks);
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		db.close();
+		return arraylistpdf;
+	}
 }

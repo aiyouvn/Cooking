@@ -55,15 +55,15 @@ public class ScreenActivity extends Activity {
 	ListView lstpdf;
 	TextView txtpdf;
 	EditText editsearch;
-	ReaderView   mDocView;
-	Button btngrid, btnlist, btnxoa,btnmenu;
+	ReaderView mDocView;
+	Button btngrid, btnlist, btnxoa, btnmenu;
 	GridView grid_view;
 	ArrayList<FilePdf> arrayPdf;
 	ArrayAdapter<FilePdf> adapter;
 	PdfDatabase sql;
 	String path;
-	 String keyWord;
-	 private AlertDialog.Builder mAlertBuilder;
+	String keyWord;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +90,7 @@ public class ScreenActivity extends Activity {
 		// /search
 		editsearch = (EditText) findViewById(R.id.editxoa);
 		btnxoa = (Button) findViewById(R.id.btnxoa);
+		// getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		btnxoa.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -101,18 +102,18 @@ public class ScreenActivity extends Activity {
 
 			}
 		});
-		
 		editsearch.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				// TODO Auto-generated method stub
-				 keyWord = editsearch.getText().toString();
+				// getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+				keyWord = editsearch.getText().toString();
 				RunBackroundSearch runsearch = new RunBackroundSearch();
 				runsearch.execute(keyWord);
-				
-				RunBackroundSearchList runsearchlist=new RunBackroundSearchList();
+
+				RunBackroundSearchList runsearchlist = new RunBackroundSearchList();
 				runsearchlist.execute(keyWord);
 				if (keyWord.equals("")) {
 					btnxoa.setVisibility(View.GONE);
@@ -141,7 +142,6 @@ public class ScreenActivity extends Activity {
 
 			}
 		});
-		
 
 		// list and grid
 		lstpdf = (ListView) findViewById(R.id.lstPdf);
@@ -240,33 +240,15 @@ public class ScreenActivity extends Activity {
 							+ arrayPdf.get(position).getName_dpf() + ".pdf");
 					final Intent intent = new Intent(ScreenActivity.this,
 							MuPDFActivity.class);
-				intent.setAction(Intent.ACTION_VIEW);
+					intent.setAction(Intent.ACTION_VIEW);
 
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-		/*			if(mDocView.getDisplayedViewIndex()!=0)
-					{
-						AlertDialog alert = mAlertBuilder.create();
-						alert.setTitle("ban co muon");
-						alert.setButton(AlertDialog.BUTTON_POSITIVE, "Ok",
-								new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int which) {
-								intent.putExtra(Config.INDEX_PAGE,mDocView.getDisplayedViewIndex());
-								startActivity(intent);
-							}
-						});
-						alert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",
-								new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int which) {
-								finish();
-							}
-						});
-						alert.show();
-					}*/
-					
-					
-				//	intent.putExtra(Config.INDEX_PAGE,0);
+					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra("name_pdf", arrayPdf.get(position)
+							.getName_dpf());
+					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());
 					startActivity(intent);
+		
 
 				}
 			});
@@ -281,18 +263,20 @@ public class ScreenActivity extends Activity {
 		@Override
 		protected ArrayList<FilePdf> doInBackground(Object... params) {
 			// TODO Auto-generated method stub
-			 keyWord = editsearch.getText().toString();
+			keyWord = editsearch.getText().toString();
 
 			ArrayList<FilePdf> arraysearch = new ArrayList<FilePdf>();
 			ArrayList<FilePdf> arrayPdfsearch = sql.getAllFilePdf();
 			try {
 				if (arrayPdfsearch.size() != 0) {
 					for (int i = 0; i <= arrayPdfsearch.size(); i++) {
+						int id=arrayPdfsearch.get(i).getId();
 						String namegrid = arrayPdfsearch.get(i).getName_dpf();
 						String a = namegrid.toLowerCase();
 						String imagegrid = arrayPdfsearch.get(i).getImage();
 						if (a.contains(keyWord.trim())) {
 							FilePdf pdf = new FilePdf();
+							pdf.setId(id);
 							pdf.setName_dpf(namegrid);
 							pdf.setImage(imagegrid);
 							arraysearch.add(pdf);
@@ -328,10 +312,12 @@ public class ScreenActivity extends Activity {
 							MuPDFActivity.class);
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					intent.putExtra(Config.INDEX_PAGE, 0);
-					
-					
+					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra("name_pdf", arrayPdf.get(position)
+							.getName_dpf());
+					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());
 					startActivity(intent);
+				
 
 				}
 			});
@@ -348,18 +334,21 @@ public class ScreenActivity extends Activity {
 		@Override
 		protected ArrayList<FilePdf> doInBackground(Object... params) {
 			// TODO Auto-generated method stub
-			 keyWord = editsearch.getText().toString();
+			keyWord = editsearch.getText().toString();
 
 			ArrayList<FilePdf> arraysearchlist = new ArrayList<FilePdf>();
 			ArrayList<FilePdf> arrayPdfsearchlist = sql.getAllFilePdf();
 			try {
 				if (arrayPdfsearchlist.size() != 0) {
 					for (int i = 0; i <= arrayPdfsearchlist.size(); i++) {
-						String namelist = arrayPdfsearchlist.get(i).getName_dpf();
+						int id=arrayPdfsearchlist.get(i).getId();
+						String namelist = arrayPdfsearchlist.get(i)
+								.getName_dpf();
 						String a = namelist.toLowerCase();
 						String imagegrid = arrayPdfsearchlist.get(i).getImage();
 						if (a.contains(keyWord.trim())) {
 							FilePdf pdf = new FilePdf();
+							pdf.setId(id);
 							pdf.setName_dpf(namelist);
 							pdf.setImage(imagegrid);
 							arraysearchlist.add(pdf);
@@ -396,9 +385,12 @@ public class ScreenActivity extends Activity {
 					intent.setAction(Intent.ACTION_VIEW);
 
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					intent.putExtra(Config.INDEX_PAGE, 0);
-
+					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra("name_pdf", arrayPdf.get(position)
+							.getName_dpf());
+					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());
 					startActivity(intent);
+
 
 				}
 			});
@@ -498,9 +490,12 @@ public class ScreenActivity extends Activity {
 					intent.setAction(Intent.ACTION_VIEW);
 
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					intent.putExtra(Config.INDEX_PAGE, 0);
-
+					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra("name_pdf", arrayPdf.get(position)
+							.getName_dpf());
+					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());
 					startActivity(intent);
+					
 
 				}
 			});
@@ -522,7 +517,8 @@ public class ScreenActivity extends Activity {
 		}
 
 		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView,
+				ViewGroup parent) {
 			// TODO Auto-generated method stub
 			Viewhodler hodler = null;
 			if (convertView == null) {
@@ -532,29 +528,32 @@ public class ScreenActivity extends Activity {
 				hodler.image = (ImageView) convertView
 						.findViewById(R.id.imageview2);
 				hodler.name = (TextView) convertView.findViewById(R.id.txtpdf);
-				btnmenu=(Button)findViewById(R.id.btnmenu);
-				hodler.btnmenu = (Button) convertView.findViewById(R.id.btnmenu);
+				btnmenu = (Button) findViewById(R.id.btnmenu);
+				hodler.btnmenu = (Button) convertView
+						.findViewById(R.id.btnmenu);
 
 				convertView.setTag(hodler);
-				convertView.setTag(R.id.btnmenu,hodler.btnmenu);
+				convertView.setTag(R.id.btnmenu, hodler.btnmenu);
 				hodler.btnmenu.setOnClickListener(new View.OnClickListener() {
 
-		             @Override
-		            public void onClick(View v) {
-		            	// Viewhodler holder1 = (Viewhodler)v.getTag();
-		                //Access the Textview from holder1 like below
-		              //  holder1.btnmenu.setText("Plus");
-		            	 
-		            	 Intent intentmenu= new Intent(ScreenActivity.this,CategoryActivity.class);
-		            	 Bundle bundle =new Bundle();
-		            	 bundle.putInt("id_pdf",arrayPdf.get(position).getId());
-		            	 bundle.putString("name_pdf", arrayPdf.get(position).getName_dpf());
-		            	 intentmenu.putExtras(bundle);
-		            	 startActivity(intentmenu);
-		            	 
+					@Override
+					public void onClick(View v) {
+						// Viewhodler holder1 = (Viewhodler)v.getTag();
+						// Access the Textview from holder1 like below
+						// holder1.btnmenu.setText("Plus");
 
-		            }
-		        });
+						Intent intentmenu = new Intent(ScreenActivity.this,
+								CategoryActivity.class);
+						Bundle bundle = new Bundle();
+						bundle.putInt("id_pdf", arrayPdf.get(position).getId());
+						bundle.putString("name_pdf", arrayPdf.get(position)
+								.getName_dpf());
+						intentmenu.putExtras(bundle);
+						startActivity(intentmenu);
+						
+
+					}
+				});
 				convertView.setTag(R.id.txtpdf, hodler.name);
 
 				convertView.setTag(R.id.imageview2, hodler.image);

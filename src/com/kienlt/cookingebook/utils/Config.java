@@ -16,7 +16,7 @@ public class Config {
 	public static String PDF_QUICK_AND_EASY ="Quick_And_Easy.pdf";
 	public static String PDF_STUDENTS_MEALS  ="Students_Meals.pdf";
 	public static String FOLDER_NAME="Cooking";
-	public static String INDEX_PAGE="10";
+	public static String INDEX_PAGE="page_index";
 	
 	
 	
