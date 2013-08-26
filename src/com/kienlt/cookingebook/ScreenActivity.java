@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -84,6 +83,7 @@ public class ScreenActivity extends Activity {
 			copyTask.execute();
 			prefs.edit().putBoolean("first_run", false).commit();
 		}
+		
 		sql = new PdfDatabase(getBaseContext());
 		RunBackround runbacround = new RunBackround();
 		runbacround.execute();
@@ -179,21 +179,16 @@ public class ScreenActivity extends Activity {
 	class RunBackround extends AsyncTask<Void, Void, ArrayList<FilePdf>> {
 		String line = "";
 		int id_pdf;
-		int id_pdf2;
 		String namePdf = "";
 		String imagePdf = "";
 
 		@Override
 		protected ArrayList<FilePdf> doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			arrayPdf = new ArrayList<FilePdf>();
-
-			arrayPdf = sql.getAllFilePdf();
-
+			ArrayList<Integer> arrayPdf = sql.getAllIDFilePdf();
 			try {
 				FileInputStream iStream = new FileInputStream(path);
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(iStream, "utf-8"), 8);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(
+						iStream, "utf-8"), 8);
 				while ((line = reader.readLine()) != null) {
 					String[] str = line.split(",");
 					if (str[0].contains("id") || str[0].contains("name")
@@ -202,25 +197,31 @@ public class ScreenActivity extends Activity {
 					id_pdf = Integer.parseInt(str[0].toString());
 					namePdf = str[1].toString();
 					imagePdf = str[2].toString();
-					Log.d("in ra", id_pdf + namePdf + imagePdf);
-					// arrayPdf=sql.getAllFilePdf();
-					FilePdf pdf = new FilePdf();
-					pdf.setId(id_pdf);
-					pdf.setName_dpf(namePdf);
-					pdf.setImage(imagePdf);
-					sql.insertPdf_File(pdf);
+				//	Log.d("in ra", id_pdf + namePdf + imagePdf);
+					if (!arrayPdf.contains(id_pdf)) {
+						FilePdf pdf = new FilePdf();
+						pdf.setId(id_pdf);
+						pdf.setName_dpf(namePdf);
+						pdf.setImage(imagePdf);
+						// if not exist
+						// if(sql.getPDFById(id_pdf)==null){
+						sql.insertPdf_File(pdf);
+						// }
+					}
 
 				}
 
 				reader.close();
-				arrayPdf = sql.getAllFilePdf();
+				ArrayList<FilePdf> arrayPdf2 = sql.getAllFilePdf();
+				return arrayPdf2;
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			return arrayPdf;
+			return new ArrayList<FilePdf>();
+			
+		   
 		}
 
 		@Override
@@ -243,7 +244,7 @@ public class ScreenActivity extends Activity {
 					intent.setAction(Intent.ACTION_VIEW);
 
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra(Config.INDEX_PAGE, 0);
 					intent.putExtra("name_pdf", arrayPdf.get(position)
 							.getName_dpf());
 					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());
@@ -269,7 +270,7 @@ public class ScreenActivity extends Activity {
 			ArrayList<FilePdf> arrayPdfsearch = sql.getAllFilePdf();
 			try {
 				if (arrayPdfsearch.size() != 0) {
-					for (int i = 0; i <= arrayPdfsearch.size(); i++) {
+					for (int i = 0; i < arrayPdfsearch.size(); i++) {
 						int id=arrayPdfsearch.get(i).getId();
 						String namegrid = arrayPdfsearch.get(i).getName_dpf();
 						String a = namegrid.toLowerCase();
@@ -290,7 +291,6 @@ public class ScreenActivity extends Activity {
 
 			return arraysearch;
 		}
-
 		@Override
 		protected void onPostExecute(ArrayList<FilePdf> result) {
 			// TODO Auto-generated method stub
@@ -299,7 +299,6 @@ public class ScreenActivity extends Activity {
 			grid_view = (GridView) findViewById(R.id.gridPdf);
 			adapter = new MyAdapter(ScreenActivity.this, arrayPdf);
 			grid_view.setAdapter(adapter);
-
 			grid_view.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
@@ -312,7 +311,7 @@ public class ScreenActivity extends Activity {
 							MuPDFActivity.class);
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra(Config.INDEX_PAGE, 0);
 					intent.putExtra("name_pdf", arrayPdf.get(position)
 							.getName_dpf());
 					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());
@@ -335,12 +334,11 @@ public class ScreenActivity extends Activity {
 		protected ArrayList<FilePdf> doInBackground(Object... params) {
 			// TODO Auto-generated method stub
 			keyWord = editsearch.getText().toString();
-
 			ArrayList<FilePdf> arraysearchlist = new ArrayList<FilePdf>();
 			ArrayList<FilePdf> arrayPdfsearchlist = sql.getAllFilePdf();
 			try {
 				if (arrayPdfsearchlist.size() != 0) {
-					for (int i = 0; i <= arrayPdfsearchlist.size(); i++) {
+					for (int i = 0; i < arrayPdfsearchlist.size(); i++) {
 						int id=arrayPdfsearchlist.get(i).getId();
 						String namelist = arrayPdfsearchlist.get(i)
 								.getName_dpf();
@@ -385,7 +383,7 @@ public class ScreenActivity extends Activity {
 					intent.setAction(Intent.ACTION_VIEW);
 
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra(Config.INDEX_PAGE, 0);
 					intent.putExtra("name_pdf", arrayPdf.get(position)
 							.getName_dpf());
 					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());
@@ -472,6 +470,7 @@ public class ScreenActivity extends Activity {
 		protected void onPostExecute(ArrayList<FilePdf> result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			adapter.clear();
 			lstpdf = (ListView) findViewById(R.id.lstPdf);
 			arrayPdf = new ArrayList<FilePdf>();
 			arrayPdf = result;
@@ -490,7 +489,7 @@ public class ScreenActivity extends Activity {
 					intent.setAction(Intent.ACTION_VIEW);
 
 					intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-					intent.putExtra(Config.INDEX_PAGE, position);
+					intent.putExtra(Config.INDEX_PAGE, 0);
 					intent.putExtra("name_pdf", arrayPdf.get(position)
 							.getName_dpf());
 					intent.putExtra("id_PdfFile", arrayPdf.get(position).getId());

@@ -15,7 +15,7 @@
         android:id="@+id/imagebmark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/menu" />
+        android:src="@drawable/bookmar" />
 
     <TextView
         android:id="@+id/txttitlebkark"
@@ -23,7 +23,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
-        android:layout_weight="8"
+        android:layout_weight="2.5"
+        android:text="TextView"
+        android:textSize="@dimen/text_size2"
+        android:textColor="@android:color/black" />
+    <TextView
+        android:id="@+id/txttime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="2.5"
         android:text="TextView"
         android:textSize="@dimen/text_size2"
         android:textColor="@android:color/black" />
@@ -38,11 +48,19 @@
         android:textSize="@dimen/text_size2" 
         android:text="...." /> -->
 
+    <CheckBox
+        android:id="@+id/ckbdelete"
+        android:layout_width="0dp"
+           android:layout_weight="1"
+           android:focusable="false"
+        android:layout_height="wrap_content"
+         />
+
     <TextView
         android:id="@+id/txtnumber_pagebmark"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="0dp"
         android:layout_weight="1"
         android:text="TextView"
         android:textColor="#8B0000"

@@ -1,15 +1,50 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".BookMarksActivity" >
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bar"
+        android:paddingBottom="5dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="5dp" >
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginRight="17dp"
+            android:contentDescription="@string/search_document"
+            android:src="@drawable/de" />
+
+        <TextView
+            android:id="@+id/countcheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+             android:layout_alignParentLeft="true"
+             android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@+id/deleteButton"
+            android:textColor="@android:color/white"
+            android:text="" />
+        
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listbookmark_pdf"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" >
+        android:layout_height="match_parent" >
+     
     </ListView>
 
-</RelativeLayout>
+</LinearLayout>

@@ -31,6 +31,7 @@ public class PdfDatabase extends SQLiteOpenHelper {
 	private static final String KEY_TITLE3 = "name";
 	private static final String KEY_NUMBER3 = "number_bookmark";
 	private static final String KEY_CONSTANST3 = "id_pdf";
+	private static final String KEY_DATETIME ="date_time";
 	
 
 	public PdfDatabase(Context context) {
@@ -54,7 +55,7 @@ public class PdfDatabase extends SQLiteOpenHelper {
 
 		String SQL3 = "CREATE TABLE " + TABLE_NAME3 + "(" + KEY_ID3
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT ," + KEY_TITLE3 + " TEXT ,"
-				+ KEY_NUMBER3 + " INTEGER ," + KEY_CONSTANST3 + " INTEGER )";
+				+ KEY_NUMBER3 + " INTEGER ," + KEY_CONSTANST3 + " INTEGER ,"+ KEY_DATETIME+" TEXT )";
 		db.execSQL(SQL3);
 
 	}
@@ -105,27 +106,50 @@ public class PdfDatabase extends SQLiteOpenHelper {
 		return arraylistpdf;
 
 	}
+	
+	// GETALL DATA IN TABLE PDF_FILE
+	public ArrayList<Integer> getAllIDFilePdf() {
+		ArrayList<Integer> arraylistpdf = new ArrayList<Integer>();
 
-	// SELECT BOOK TO ID
-	/*
-	 * public FilePdf SelectBookId(int id) { SQLiteDatabase db =
-	 * this.getReadableDatabase(); String[] columns = { KEY_ID, KEY_NAME,
-	 * KEY_IMAGES }; String selection = KEY_ID + "='" + id + "'"; String[]
-	 * selectionArgs = { String.valueOf(id) }; String groupBy = null; String
-	 * having = null; String orderBy = null; Cursor cusor = db.query(TABLE_NAME,
-	 * columns, selection, selectionArgs,groupBy, having, orderBy); if (cusor !=
-	 * null)
-	 * 
-	 * cusor.moveToFirst(); FilePdf book = new FilePdf(cusor.getInt(0),
-	 * cusor.getString(1),cusor.getString(2));
-	 * 
-	 * return book;
-	 * 
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+		SQLiteDatabase db = this.getWritableDatabase();
+		String sql = "select "+KEY_ID+" from " + TABLE_NAME;
+
+		Cursor cursor = db.rawQuery(sql, null);
+
+		if (cursor.moveToFirst()) {
+			do {
+				arraylistpdf.add(Integer.parseInt(cursor.getString(0)));
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		db.close();
+		return arraylistpdf;
+
+	}
+
+	
+	// GETALL DATA IN TABLE PDF_FILE
+	public FilePdf getPDFById(int id) {
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		String sql = "select * from " + TABLE_NAME + " where "+ KEY_ID +" = "+id;
+
+		Cursor cursor = db.rawQuery(sql, null);
+		FilePdf filepdf = null;
+		if (cursor.moveToFirst()) {
+			do {
+				filepdf = new FilePdf();
+				filepdf.setId(Integer.parseInt(cursor.getString(0)));
+				filepdf.setName_dpf(cursor.getString(1));
+				filepdf.setImage(cursor.getString(2));
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		db.close();
+		return filepdf;
+
+	}
+
 
 	public FilePdf getBookToId(int id) {
 		SQLiteDatabase db = this.getReadableDatabase();
@@ -152,6 +176,26 @@ public class PdfDatabase extends SQLiteOpenHelper {
 		values.put(KEY_CONSTANST, detailsPdf.getId_pdf());
 		db.insert(TABLE_NAME2, null, values);
 		db.close();
+	}
+	
+	
+	public ArrayList<Integer> getAllIDDetailsPdf() {
+		ArrayList<Integer> arraylistpdf = new ArrayList<Integer>();
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		String sql = "select "+KEY_ID2+" from " + TABLE_NAME2;
+
+		Cursor cursor = db.rawQuery(sql, null);
+
+		if (cursor.moveToFirst()) {
+			do {
+				arraylistpdf.add(Integer.parseInt(cursor.getString(0)));
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		db.close();
+		return arraylistpdf;
+
 	}
 
 	// GETALL DATA IN TABLE DETAILS_PDF
@@ -183,6 +227,7 @@ public class PdfDatabase extends SQLiteOpenHelper {
 		values.put(KEY_TITLE3, bookmark.getName());
 		values.put(KEY_NUMBER3, bookmark.getNumber_bookmark());
 		values.put(KEY_CONSTANST3, bookmark.getId_ck());
+		values.put(KEY_DATETIME, bookmark.getDatetime());
 		db.insert(TABLE_NAME3, null, values);
 		db.close();
 	}
@@ -202,6 +247,7 @@ public class PdfDatabase extends SQLiteOpenHelper {
 				bookmarks.setName(cursor.getString(1));
 				bookmarks.setNumber_bookmark(cursor.getInt(2));
 				bookmarks.setId_ck(cursor.getInt(3));
+				bookmarks.setDatetime(cursor.getString(4));
 				arraylistpdf.add(bookmarks);
 			} while (cursor.moveToNext());
 		}
@@ -224,11 +270,20 @@ public class PdfDatabase extends SQLiteOpenHelper {
 				bookmarks.setName(cursor.getString(1));
 				bookmarks.setNumber_bookmark(cursor.getInt(2));
 				bookmarks.setId_ck(cursor.getInt(3));
+				bookmarks.setDatetime(cursor.getString(4));
 				arraylistpdf.add(bookmarks);
 			} while (cursor.moveToNext());
 		}
 		cursor.close();
 		db.close();
 		return arraylistpdf;
+	}
+	// Delete Bookmark
+	public void deleteBookmark(Bookmarks bookmark) {
+	    SQLiteDatabase db = this.getWritableDatabase();
+	    
+	    db.delete(TABLE_NAME3, KEY_ID3 + " = ?",
+	            new String[] { String.valueOf(bookmark.getId()) });
+	    db.close();
 	}
 }

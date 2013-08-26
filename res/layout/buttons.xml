@@ -26,27 +26,28 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp	"
                 android:background="@null"
                 android:contentDescription="@string/search_document"
-                android:src="@drawable/ic_magnifying_glass" />
+                android:src="@drawable/iconss" />
 
             <ImageButton
                 android:id="@+id/bookmarkButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="235dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="60dp"
                 android:background="@null"
                 android:src="@drawable/markxml" />
-
+<!-- 
             <ImageButton
                 android:id="@+id/bookmarkAllButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="180dp"
+                android:layout_marginLeft="200dp"
                 android:background="@null"
-                android:src="@drawable/markall" />
+                android:src="@drawable/markall" /> -->
 
             <ImageButton
                 android:id="@+id/outlineButton"
@@ -67,6 +68,7 @@
                 android:contentDescription="@string/link_control"
                 android:src="@drawable/ic_link" />
             -->
+       
 
             <TextView
                 android:id="@+id/docNameText"
@@ -130,6 +132,38 @@
                 android:src="@drawable/ic_arrow_right" />
         </RelativeLayout>
     </ViewSwitcher>
+
+      <RelativeLayout
+            android:id="@+id/topBar3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bar"
+            android:paddingBottom="0dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp" >
+           <ImageButton
+                android:id="@+id/homeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:background="@null"
+                android:src="@drawable/home" />
+            <ImageButton
+                android:id="@+id/categoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="55dp"
+                android:background="@null"
+                android:src="@drawable/cent" />
+          
+        </RelativeLayout>
+        
+      
+       
+    
 
     <RelativeLayout
         android:id="@+id/lowerButtons"

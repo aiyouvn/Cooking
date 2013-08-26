@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ContainActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/bar2"
+        android:orientation="horizontal" >
+
+           <ImageButton
+            android:id="@+id/showMenuButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@null"
+            android:src="@drawable/bkc" />
+        <ImageButton
+            android:id="@+id/showBookmarkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:background="@null"
+            android:src="@drawable/bk" />
+
+        <ImageButton
+            android:id="@+id/deletehomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+             android:visibility="gone" 
+            android:background="@null"
+            android:contentDescription="@string/search_document"
+            android:src="@drawable/de" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listdetails_pdf2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" >
+    </ListView>
+
+    <ListView
+        android:id="@+id/listdetails_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" >
+    </ListView>
+
+</LinearLayout>

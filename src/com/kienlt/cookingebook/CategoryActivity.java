@@ -22,7 +22,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.artifex.mupdf.MuPDFActivity;
 import com.kienlt.cookingebook.db.DetailsPdf;
 import com.kienlt.cookingebook.db.PdfDatabase;
@@ -54,7 +53,7 @@ int id_pdf_send;
 	class RunCategory extends AsyncTask<Void, Void, ArrayList<DetailsPdf>>
 	{
 		String line="";
-		String id="";
+		int  id=0;
 		String title="";
 		String number_page="";
 		String id_pdf="";
@@ -69,6 +68,8 @@ int id_pdf_send;
 		@Override
 		protected ArrayList<DetailsPdf> doInBackground(Void... params) {
 			// TODO Auto-generated method stub
+			ArrayList<Integer> arrayPdf = sql.getAllIDDetailsPdf();
+			
 			try {
 				String path = Config.FOLDER_DATABASE+"/DetailsPdf.csv";
 				FileInputStream iStream =  new FileInputStream(path);
@@ -79,33 +80,29 @@ int id_pdf_send;
 					 String[] str = line.split(",");
 					 if(str[0].contains("id")||str[0].contains("title")||str[0].contains("number_page")||str[0].contains("id_pdf"))
 			                continue;
-					 id=str[0].toString();
+					 id=Integer.parseInt(str[0].toString());
 					 title=str[1].toString();
 					 number_page=str[2].toString();
 					 id_pdf=str[3].toString();
-					    Log.d("in ra",id+title+number_page+id_pdf );
-				    DetailsPdf details_pdf=new DetailsPdf();
-				    details_pdf.setId(Integer.parseInt(id));
-				    details_pdf.setTitle(title);
-				    details_pdf.setNumber_page(Integer.parseInt(number_page));
-				    details_pdf.setId_pdf(Integer.parseInt(id_pdf));
-					sql.insertDetails_Pdf(details_pdf);
+				    if (!arrayPdf.contains(id)) {
+				    	 DetailsPdf details_pdf=new DetailsPdf();
+						    details_pdf.setId(id);
+						    details_pdf.setTitle(title);
+						    details_pdf.setNumber_page(Integer.parseInt(number_page));
+						    details_pdf.setId_pdf(Integer.parseInt(id_pdf));
+						sql.insertDetails_Pdf(details_pdf);
+					}
+					
 				}
 				reader.close();
 				arraylist_details=sql.getAllDetailsPdf(id_pdf_send);
+				return arraylist_details;
 				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//arraylist_details=sql.getAllDetailsPdf(id_pdf_send);
-			/*for(int i=0;i<=arraylist_details.size();i++)
-			{
-				String a=arraylist_details.get(i).getTitle();
-				int b=arraylist_details.get(i).getNumber_page();
-				int  c=arraylist_details.get(i).getId_pdf();
-				Log.d("sdfsdf", a+b+c);
-			}	*/
-			return arraylist_details;
+	
+			return new ArrayList<DetailsPdf>();
 		}
 		@Override
 		protected void onPostExecute(ArrayList<DetailsPdf> result) {
@@ -138,7 +135,7 @@ int id_pdf_send;
 					intent.putExtra("name_pdf",name_pdf);
 				     intent.putExtra("id_PdfFile", arraylist_details.get(position).getId_pdf());
 				     int a=arraylist_details.get(position).getId_pdf();
-				     Log.d("id_catelogry",""+ a);
+				     Log.d("id_catelogry",""+ a+name_pdf);
 					
 					startActivity(intent);
 

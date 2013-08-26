@@ -1,26 +1,113 @@
 id,title,number_page,id_pdf
-1,1. Xôi dừa lá dứa,10,2
-2,2. Kimbap - Cơm cuốn rong biển kiểu Hàn Quốc,12,2
-3,3. Súp cà rốt với gừng,14,2
-4,4. Bí ngòi cà chua hấp trứng,16,2
-5,5. Nộm gà,18,2
-6,6. Salad tôm  măng  bắp cải,20,2
-7,7. Salad thịt bò kiểu Thái	,22,2
-8,8. Nộm xoài,24,2
-9,9. Tôm sốt ớt ngọt,26,2
-10,10. Tôm rang thơm,28,2
-11,11. Mực nhồi thịt chiên,30,2
-12,12. Chem chép xào tỏi và rau thơm	,32,2
-13,13. Gà rô ti nước dừa,34,2
-14,14. Gà ngũ vị hương rán,36,2
-15,15. Canh xương hầm củ cải cà rốt,38,2
-16,16. Bí đỏ nhồi thịt hấp,40,2
-17,16. Bí đỏ nhồi thịt hấp,42,2
-18,18. Mì bò sukiyaki,44,2
-19,19. Bò hầm rau củ kiểu Nhật,46,2
-20,20. Orange wafers,48,2
-21,21. Coconut creme carame,50,2
-22,22. Bánh dâu tây sữa chua,52,2
-23,23. Bánh dứa úp ngược,54,2
-24,24. Bánh chocolate trắng với bột trà xanh	,56,2
-25,25. New York style cheesecake,58,2
+1, 1. Xôi dừa lá dứa,10,2
+2, 2. Kimbap - Cơm cuốn rong biển kiểu Hàn Quốc,12,2
+3, 3. Súp cà rốt với gừng,14,2
+4, 4. Bí ngòi cà chua hấp trứng,16,2
+5, 5. Nộm gà,18,2
+6, 6. Salad tôm  măng  bắp cải,20,2
+7, 7. Salad thịt bò kiểu Thái,22,2
+8, 8. Nộm xoài,24,2
+9, 9. Tôm sốt ớt ngọt,26,2
+10, 10. Tôm rang thơm,28,2
+11, 11. Mực nhồi thịt chiên,30,2
+12, 12. Chem chép xào tỏi và rau thơm,32,2
+13, 13. Gà rô ti nước dừa,34,2
+14, 14. Gà ngũ vị hương rán,36,2
+15, 15. Canh xương hầm củ cải cà rốt,38,2
+16, 16. Bí đỏ nhồi thịt hấp,40,2
+17, 16. Bí đỏ nhồi thịt hấp,42,2
+18, 18. Mì bò sukiyaki,44,2
+19, 19. Bò hầm rau củ kiểu Nhật,46,2
+20, 20. Orange wafers,48,2
+21, 21. Coconut creme carame,50,2
+22, 22. Bánh dâu tây sữa chua,52,2
+23, 23. Bánh dứa úp ngược,54,2
+24, 24. Bánh chocolate trắng với bột trà xanh,56,2
+25, 25. New York style cheesecake,58,2
+26, 1.Bánh mì bơ tỏi,8,4
+27, 2.Khoai tây nướng muối,10,4
+28, 3.Kẹo hạt dẻ,12,4
+29, 4.Bắp rang bơ,14,4
+30, 5.Dorayaki,16,4
+31, 6.Bánh quy Lady Finger,18,4
+32, 7.Cải làm sốt dầu hào,20,4
+33, 8.Thịt nướng cuốn khoai tây bi nướng,22,4
+34, 9.Canh hẹ đậu tươi thịt xay,24,4
+35, 10.Dứa đốt rượu,26,4
+36, 11.Đậu phụng xào ớt chuông,28,4
+37, 12.Gà on hoa hồii,30,4
+38, 13.Rau xanh rưới sốt bơ chanh,32,4
+39, 14.Tôm kho dừa,34,4
+40, 15.Nộm rau muống thịt bò,36,4
+41, 16.Gà rang hạt điều húng quế,38,4
+42, 17.Thịt rang sả,40,4
+43, 18.Dậu sốt nấm kim châm,42,4
+44, 19.Bò xào cay,44,4
+45, 20.Bò xào lá lốt,46,4
+46, 1.Xôi nếp cẩm đậu xanh dừa,11,5
+47, 2.Xôi vừng nước cốt dừa,13,5
+48, 3.Xôi lạp xưởng,15,5
+49, 4.Cơm nắm onigiri,17,5
+50, 5.Giá đỗ trộn cà rốt,19,5
+51, 6.Trứng rán kiểu lyon,21,5
+52, 7. Hiyayakko - Món đậu lạnh kiểu Nhật,23,5
+53, 8. Thịt viên rán,25,5
+54, 9. Gà ngũ vị hương rán,27,5
+55, 10. Cánh gà chiên nước mắm,29,5
+56, 11. Gà om nấm,31,5
+57, 12. Thịt lợn rim ngũ vị hương,33,5
+58, 13. Cá kho tương,35,5
+59, 14. Cùi dừa kho cà chua,37,5
+60, 15. Bí đỏ chiên thịt,39,5
+61, 16. Bí đỏ xào thịt bò,41,5
+62, 17. Dưa cải sen xào trứng,43,5
+63, 18. Đậu phụ sốt xì dầu vừng đen,45,5
+64, 19. Đậu bắp sốt cà chua,47,5
+65, 20. Tôm xào dứa,49,5
+66, 21 Canh cải bó xôi nấu đậu phụ,51,5
+67, 22. Canh mướp đắng nấu tôm tươi,53,5
+68, 23. Canh gà nấu mướp đắng và dứa,55,5
+69, 24. Canh thịt bò cà chua,57,5
+70, 25. Canh hẹ đậu tươi thịt xay,59,5
+71, 26. Cơm rang dứa,61,5
+72, 27. Cháo nấm đậu tươi,63,5
+73, 28. Cháo tim,65,5
+74, 29. Chè đậu xanh bí ngô,67,5
+75, 30. Chè nếp cẩm sữa chua,69,5
+76, 1.Bánh cuộn hạnh nhân,8,3
+77, 2.Chocolate Crinkles,10,3
+78, 3.Cookie cam nho khô,12,3
+79, 4.Bánh quy vừng,14,3
+80, 5.Bánh quy hoa hạnh nhân,16,3
+81, 6.Bánh cookie hạt hướng dương,18,3
+82, 7.Creamcheese brownies,20,3
+83, 8.Bánh tart chanh,22,3
+84, 9.Bánh tart lê kem hạnh nhân,24,3
+85, 10.Bánh cupcake trà xanh,26,3
+86, 11.Bánh cupcake không bột,28,3
+87, 12.Bánh muffins chocolate trắng,30,3
+88, 13.Bánh muffins cheesecake dâu tây,32,3
+89, 14.Bánh gateaux dừa và quả mâm xôi đen,34,3
+90, 15.Bánh chiffon cam,36,3
+91, 16.Chocolate cheesecake bar,40,3
+92, 17.Ga-tô Hồng Kông,42,3
+93, 18.Chocalate Genoise,44,3
+94, 19.Carrot cake,48,3
+95, 20.Bánh bông lan khoai môn,50,3
+96, 21.Tiramisu,52,3
+97, 22.Chocalate egg yolk pudding,54,3
+98, 23.Cherry Clafoutis,56,3
+99, 24.Chocalate brulees,58,3
+100, 25.ý tưởng sinh nhật đơn giản,60,3
+101, A. Những vật dụng cơ bản của làm bánh,10,1
+102, B.Hệ đo lường dùng trong làm bánh  nấu nướng,14,1
+103, C. Hình ảnh tên gọi các loại khuôn làm bánh,18,1
+104, D. Các loại bột làm bánh,24,1
+105, E. Các loại đường làm bánh,28,1
+106, F. Các loại hạt nuts làm bánh,32,1
+107, G. Phân biệt các loại pho-mat cheese,36,1
+108, H. Sữa và các sản phẩm từ sữa,40,1
+109, I. Các vấn đề với trứng trong làm bánh,44,1
+110, K. Tên gọi và phâm biệt các loại bánh phương tây,48,1
+111, L. Lựa chọn lò nướng phù hợp với nhu cầu sử dụng,52,1
+112, M. Cách thay thế các nguyên liệu,56,1

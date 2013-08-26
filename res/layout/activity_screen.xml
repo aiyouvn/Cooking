@@ -68,7 +68,7 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="4dp"
                 android:layout_weight="1.5"
-                android:background="@drawable/grid" />
+                android:background="@drawable/grid3" />
         </LinearLayout>
     </LinearLayout>
 

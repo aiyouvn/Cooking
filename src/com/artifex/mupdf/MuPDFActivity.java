@@ -1,13 +1,15 @@
 package com.artifex.mupdf;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -35,8 +37,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.kienlt.cookingebook.BookMarksActivity;
+//import com.kienlt.cookingebook.BookMarksActivity;
+import com.kienlt.cookingebook.ContainActivity;
 import com.kienlt.cookingebook.R;
+import com.kienlt.cookingebook.ScreenActivity;
 import com.kienlt.cookingebook.db.Bookmarks;
 import com.kienlt.cookingebook.db.PdfDatabase;
 import com.kienlt.cookingebook.utils.Config;
@@ -101,9 +105,12 @@ public class MuPDFActivity extends Activity {
 	private TextView mPageNumberView;
 	private ImageButton mSearchButton;
 	private ImageButton mBookmarkButton;
-	private ImageButton mBookmarkAllButton;
+//	private ImageButton mBookmarkAllButton;
 	private ImageButton mCancelButton;
 	private ImageButton mOutlineButton;
+	private ImageButton mHomeButton;
+	private RelativeLayout relativeLayout;
+	private ImageButton mCategory;
 	private ViewSwitcher mTopBarSwitcher;
 	// XXX private ImageButton mLinkButton;
 	private boolean mTopBarIsSearch;
@@ -142,9 +149,6 @@ public class MuPDFActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		mAlertBuilder = new AlertDialog.Builder(this);
-		// Bundle bundle =getIntent().getExtras();
-		// String a=bundle.getString(Config.INDEX_PAGE);
-		// Log.d("xuat hien ",a.toString());
 
 		if (core == null) {
 			core = (MuPDFCore) getLastNonConfigurationInstance();
@@ -370,95 +374,140 @@ public class MuPDFActivity extends Activity {
 			}
 		});
 		// Activate the BookMark
-		mBookmarkButton.setOnClickListener(new  View.OnClickListener() {
-			
+		mBookmarkButton.setOnClickListener(new View.OnClickListener() {
+
+			@SuppressLint("SimpleDateFormat")
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM HH:mm"); 
+				Date date = new Date();
 				
-				Intent intentbookmark=getIntent();
-				String name_bookmark=intentbookmark.getStringExtra("name_pdf");
-			 //   int id_PdfFile=Integer.parseInt(intentbookmark.getStringExtra("id_PdfFile"));
-				Bundle bundle=getIntent().getExtras();
-				int id_PdfFile=bundle.getInt("id_PdfFile");
-				int index_bookmark= mDocView.getDisplayedViewIndex()+1;
-				Log.d("adadadadadadadadada",""+ id_PdfFile+index_bookmark);
-				sql=new PdfDatabase(getBaseContext());
 				
-				ArrayList<Bookmarks> array=new ArrayList<Bookmarks>();
-				array=sql.getBookmarkbyId(id_PdfFile);
-				Bookmarks bookmark=new Bookmarks();
-				if(array!=null)
-				{
-				for (int i = 0; i < array.size(); i++) {
-					String name=array.get(i).getName();
-					int id=array.get(i).getNumber_bookmark();
-					
-					if(name.equals(name_bookmark) && id==index_bookmark)
-					{
-						AlertDialog.Builder alertDialog = new AlertDialog.Builder(MuPDFActivity.this);
-				    	alertDialog.setMessage("Bookmark Đã Tồn Tại !");
-				    	
-						alertDialog.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+				
+				Intent intentbookmark = getIntent();
+				String name_bookmark = intentbookmark
+						.getStringExtra("name_pdf");
+				// int
+				// id_PdfFile=Integer.parseInt(intentbookmark.getStringExtra("id_PdfFile"));
+				Bundle bundle = getIntent().getExtras();
+				int id_PdfFile = bundle.getInt("id_PdfFile");
+				int index_bookmark = mDocView.getDisplayedViewIndex() + 1;
+				Log.d("adadadadadadadadada", "" + id_PdfFile + index_bookmark);
+				sql = new PdfDatabase(getBaseContext());
+
+				ArrayList<Bookmarks> array = sql.getBookmarkbyId(id_PdfFile);
+				Bookmarks bookmark = new Bookmarks();
+				if (array != null) {
+					int i=0;
+					for (;i < array.size(); i++) {
+						String name = array.get(i).getName();
+						int numberBookmark = array.get(i).getNumber_bookmark();
+						if (name.equals(name_bookmark)
+								&& numberBookmark == index_bookmark) {
+							AlertDialog.Builder alertDialog = new AlertDialog.Builder(
+									MuPDFActivity.this);
+							alertDialog.setTitle("Thông Báo");
+							alertDialog.setIcon(R.drawable.iconwa);
+							alertDialog.setMessage("Bookmark Đã Tồn Tại !");
+
+							alertDialog.setNegativeButton("Ok",
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											// TODO Auto-generated method stub
+											dialog.cancel();
+
+										}
+									});
 							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// TODO Auto-generated method stub
-								dialog.cancel();
-								
-							}
-						});
-					
-						alertDialog.show();
-						
+							alertDialog.show();
+							i = array.size();
+						}
+
 					}
+					if(i != array.size()+1){
+						bookmark.setName(name_bookmark);
+						bookmark.setNumber_bookmark(index_bookmark);
+						bookmark.setId_ck(id_PdfFile);
+						bookmark.setDatetime(dateFormat.format(date));
+						Log.d("tai tai tai tai ", name_bookmark + index_bookmark+dateFormat.format(date));
+						sql.insertBookmark_Pdf(bookmark);
+					}
+				} else {
+
+					bookmark.setName(name_bookmark);
+					bookmark.setNumber_bookmark(index_bookmark);
+					bookmark.setId_ck(id_PdfFile);
+					bookmark.setDatetime(dateFormat.format(date));
+					sql.insertBookmark_Pdf(bookmark);
+					// mBookmarkButton.setImageResource(R.drawable.mark2);
+					Log.d("tai tai tai tai ", name_bookmark + index_bookmark+dateFormat.format(date));
 				}
-				bookmark.setName(name_bookmark);
-				bookmark.setNumber_bookmark(index_bookmark);
-				bookmark.setId_ck(id_PdfFile);
-				sql.insertBookmark_Pdf(bookmark);
-				}
-				else
-				{
-				
-				bookmark.setName(name_bookmark);
-				bookmark.setNumber_bookmark(index_bookmark);
-				bookmark.setId_ck(id_PdfFile);
-				sql.insertBookmark_Pdf(bookmark);
-				//mBookmarkButton.setImageResource(R.drawable.mark2);
-				Log.d("tai tai tai tai ", name_bookmark+index_bookmark);
-				}
-				
+
 			}
 		});
-		
-		
+
 		// Activate the BookMark
-		mBookmarkAllButton.setOnClickListener(new  View.OnClickListener() {
-			
+/*		mBookmarkAllButton.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+
 				
-	/*			Intent intentbookmark=getIntent();
-				String name_bookmark=intentbookmark.getStringExtra("name_pdf");
-				int index_bookmark= mDocView.getDisplayedViewIndex()+1;
-				sql=new PdfDatabase(getBaseContext());
-				Bookmarks bookmark=new Bookmarks();
-				bookmark.setName(name_bookmark);
-				bookmark.setNumber_bookmark(index_bookmark);
-				sql.insertBookmark_Pdf(bookmark);
-				Log.d("tai tai tai tai ", name_bookmark+index_bookmark);*/
-				Intent intent=new Intent(MuPDFActivity.this,BookMarksActivity.class);
-				Bundle bundle=getIntent().getExtras();
-				int id_PdfFile=bundle.getInt("id_PdfFile");
+				 * Intent intentbookmark=getIntent(); String
+				 * name_bookmark=intentbookmark.getStringExtra("name_pdf"); int
+				 * index_bookmark= mDocView.getDisplayedViewIndex()+1; sql=new
+				 * PdfDatabase(getBaseContext()); Bookmarks bookmark=new
+				 * Bookmarks(); bookmark.setName(name_bookmark);
+				 * bookmark.setNumber_bookmark(index_bookmark);
+				 * sql.insertBookmark_Pdf(bookmark); Log.d("tai tai tai tai ",
+				 * name_bookmark+index_bookmark);
+				 
+				Intent intent = new Intent(MuPDFActivity.this,
+						BookMarksActivity.class);
+				Bundle bundle = getIntent().getExtras();
+				int id_PdfFile = bundle.getInt("id_PdfFile");
 				intent.putExtra("posi", id_PdfFile);
 				startActivity(intent);
-				
-				
+
+			}
+		});*/
+		//
+		mHomeButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent=new Intent(MuPDFActivity.this,ScreenActivity.class);
+				startActivity(intent);
+				finish();
 			}
 		});
 		
+		mCategory.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MuPDFActivity.this,
+						ContainActivity.class);
+				Bundle bundle = getIntent().getExtras();
+				int id_PdfFile = bundle.getInt("id_PdfFile");
+				String name_bookmark = bundle
+						.getString("name_pdf");
+				intent.putExtra("posishow", id_PdfFile);
+				intent.putExtra("name_pdf_show", name_bookmark);
+				startActivity(intent);
+				
+			}
+		});
+
+
+
 		mCancelButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				searchModeOff();
@@ -557,7 +606,7 @@ public class MuPDFActivity extends Activity {
 		}
 
 		// Reenstate last state if it was recorded
-		SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+		//SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
 		// mDocView.setDisplayedViewIndex(prefs.getInt("page"+mFileName, 0));
 		mDocView.setDisplayedViewIndex(mPosition - 1);
 
@@ -635,8 +684,23 @@ public class MuPDFActivity extends Activity {
 		core = null;
 		super.onDestroy();
 	}
+	
+	void hideHome()
+	{
+		mHomeButton.setVisibility(View.INVISIBLE);
+		mCategory.setVisibility(View.INVISIBLE);
+		relativeLayout.setVisibility(View.INVISIBLE);
+	}
+	
+	void showHome()
+	{
+		mHomeButton.setVisibility(View.VISIBLE);
+		mCategory.setVisibility(View.VISIBLE);
+		relativeLayout.setVisibility(View.VISIBLE);
+	}
 
 	void showButtons() {
+		hideHome();
 		if (core == null)
 			return;
 		if (!mButtonsVisible) {
@@ -722,9 +786,11 @@ public class MuPDFActivity extends Activity {
 			});
 			mPageSlider.startAnimation(anim);
 		}
+		showHome();
 	}
 
 	void searchModeOn() {
+		hideHome();
 		if (!mTopBarIsSearch) {
 			mTopBarIsSearch = true;
 			// Focus on EditTextWidget
@@ -736,6 +802,7 @@ public class MuPDFActivity extends Activity {
 
 	void searchModeOff() {
 		if (mTopBarIsSearch) {
+			hideButtons();
 			mTopBarIsSearch = false;
 			hideKeyboard();
 			mTopBarSwitcher.showPrevious();
@@ -744,6 +811,7 @@ public class MuPDFActivity extends Activity {
 			// via overridden onChildSetup method.
 			mDocView.resetupChildren();
 		}
+		showHome();
 	}
 
 	void updatePageNumView(int index) {
@@ -762,8 +830,8 @@ public class MuPDFActivity extends Activity {
 				.findViewById(R.id.searchButton);
 		mBookmarkButton = (ImageButton) mButtonsView
 				.findViewById(R.id.bookmarkButton);
-		mBookmarkAllButton = (ImageButton) mButtonsView
-				.findViewById(R.id.bookmarkAllButton);
+		/*mBookmarkAllButton = (ImageButton) mButtonsView
+				.findViewById(R.id.bookmarkAllButton);*/
 		mCancelButton = (ImageButton) mButtonsView.findViewById(R.id.cancel);
 		mOutlineButton = (ImageButton) mButtonsView
 				.findViewById(R.id.outlineButton);
@@ -773,12 +841,17 @@ public class MuPDFActivity extends Activity {
 		mSearchFwd = (ImageButton) mButtonsView
 				.findViewById(R.id.searchForward);
 		mSearchText = (EditText) mButtonsView.findViewById(R.id.searchText);
+		
+		mCategory=(ImageButton) mButtonsView.findViewById(R.id.categoryButton);
+	relativeLayout=(RelativeLayout)mButtonsView.findViewById(R.id.topBar3);
+		mHomeButton=(ImageButton)mButtonsView.findViewById(R.id.homeButton);
 		// XXX mLinkButton =
 		// (ImageButton)mButtonsView.findViewById(R.id.linkButton);
 		mTopBarSwitcher.setVisibility(View.INVISIBLE);
 		mPageNumberView.setVisibility(View.INVISIBLE);
 		mPageSlider.setVisibility(View.INVISIBLE);
 	}
+	
 
 	void showKeyboard() {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
